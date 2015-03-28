@@ -1,0 +1,2 @@
+# SimpleAndroidORM
+Android上比较简单的基于SQLite的ORM框架
