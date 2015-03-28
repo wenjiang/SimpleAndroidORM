@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database>
+    <!-- 数据库名称 -->
+    <dbname value="maomao.db"></dbname>
+
+    <!-- 数据库版本 -->
+    <version value="3"></version>
+
+    <!-- 数据库表 -->
+    <list>
+        <mapping class="com.example.pc.model.StatusEntity"></mapping>
+        <mapping class="com.example.pc.model.UserEntity"></mapping>
+    </list>
+</database>
