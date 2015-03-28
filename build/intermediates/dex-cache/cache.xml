@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-2c7b3f93a4765de67fc456e30fee656c798d7e65.jar" />
+    </item>
+    <item
+        jar="C:\Users\pc\.gradle\caches\modules-2\files-2.1\com.maomao.client\db\0.1.2\6cf3f30083855b50bb92959f0132d6fc1e9fb9a0\db-0.1.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6cf3f30083855b50bb92959f0132d6fc1e9fb9a0">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\db-0.1.2-94eec91f3a03a88284b7e3e31b70ddb33bb1c34b.jar" />
+    </item>
+    <item
+        jar="C:\Users\pc\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3\5fc52c41ef0239d1093a1eb7c3697036183677ce\gson-2.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5fc52c41ef0239d1093a1eb7c3697036183677ce">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\gson-2.3-822a82db4d2c67ed3673a667e1e6ec67eba3d68f.jar" />
+    </item>
+    <item
+        jar="C:\Users\pc\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\18.0\cce0823396aa693798f8882e64213b1772032b09\guava-18.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="cce0823396aa693798f8882e64213b1772032b09">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\guava-18.0-dbd2e76c33c07933540d60983860ad29712980af.jar" />
+    </item>
+    <item
+        jar="C:\Users\pc\.gradle\caches\modules-2\files-2.1\com.maomao.client\yong\0.2.3\df38c12be09ef705243c0142091b499711f261c0\yong-0.2.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="df38c12be09ef705243c0142091b499711f261c0">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\yong-0.2.3-09324ae223e8dcc5dfba1b2f7297390ce6ebe45d.jar" />
+    </item>
+    <item
+        jar="E:\SQLPratice\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-3e83cc1dbdaf7868817624fc617526b0f91dd80d.jar" />
+    </item>
+    <item
+        jar="E:\SQLPratice\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\classes-c2a0bc6a1fb2aa9253051fc19344604d9f8a38a4.jar" />
+    </item>
+    <item
+        jar="C:\Users\pc\.gradle\caches\modules-2\files-2.1\com.maomao.client\yomo\0.1.2\753303d5922bc23066052ce9a27c4a57edb25cc4\yomo-0.1.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="753303d5922bc23066052ce9a27c4a57edb25cc4">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\yomo-0.1.2-330dbf59b4a19e3d91269e9471c103fc1944b83e.jar" />
+    </item>
+    <item
+        jar="E:\SQLPratice\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="E:\SQLPratice\app\build\intermediates\pre-dexed\debug\classes-739dfa461524967ce4babb5474f94dc58de4ae2e.jar" />
+    </item>
+
+</items>

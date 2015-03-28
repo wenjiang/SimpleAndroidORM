@@ -1,0 +1,10 @@
+E:\SQLPratice\app\build\intermediates\classes\debug
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-2c7b3f93a4765de67fc456e30fee656c798d7e65.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\yomo-0.1.2-330dbf59b4a19e3d91269e9471c103fc1944b83e.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\db-0.1.2-94eec91f3a03a88284b7e3e31b70ddb33bb1c34b.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\yong-0.2.3-09324ae223e8dcc5dfba1b2f7297390ce6ebe45d.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-3e83cc1dbdaf7868817624fc617526b0f91dd80d.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\gson-2.3-822a82db4d2c67ed3673a667e1e6ec67eba3d68f.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\classes-739dfa461524967ce4babb5474f94dc58de4ae2e.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\classes-c2a0bc6a1fb2aa9253051fc19344604d9f8a38a4.jar
+E:\SQLPratice\app\build\intermediates\pre-dexed\debug\guava-18.0-dbd2e76c33c07933540d60983860ad29712980af.jar
