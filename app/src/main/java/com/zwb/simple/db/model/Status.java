@@ -1,8 +1,8 @@
-package com.example.pc.model;
+package com.zwb.simple.db.model;
 
-import com.example.pc.sqlpratice.Field;
-import com.example.pc.sqlpratice.FieldType;
-import com.example.pc.sqlpratice.Table;
+import com.zwb.simple.db.annotation.Column;
+import com.zwb.simple.db.annotation.ColumnType;
+import com.zwb.simple.db.annotation.Table;
 
 import org.json.JSONObject;
 
@@ -10,11 +10,11 @@ import org.json.JSONObject;
  * Created by pc on 2015/3/4.
  */
 @Table(table = "status")
-public class StatusEntity extends BaseEntity {
-    @Field
-    @FieldType(ColumnType = "String")
+public class Status extends BaseTable {
+    @Column
+    @ColumnType(ColumnType = "String")
     private JSONObject text;
-    @Field
+    @Column
     private int age;
 
     public JSONObject getText() {

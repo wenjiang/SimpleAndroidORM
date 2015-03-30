@@ -1,4 +1,4 @@
-package com.example.pc.db;
+package com.zwb.simple.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.example.pc.model.BaseEntity;
-import com.example.pc.sqlpratice.FieldType;
+import com.zwb.simple.db.exception.BaseSQLiteException;
+import com.zwb.simple.db.model.BaseTable;
+import com.zwb.simple.db.annotation.ColumnType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,8 +63,8 @@ public class DatabaseStore {
         Map<String, String> types = new HashMap<String, String>();
         for (Field field : fields) {
             fieldNames.add(field.getName());
-            if (field.isAnnotationPresent(FieldType.class)) {
-                FieldType fieldType = field.getAnnotation(FieldType.class);
+            if (field.isAnnotationPresent(ColumnType.class)) {
+                ColumnType fieldType = field.getAnnotation(ColumnType.class);
                 types.put(field.getName().toLowerCase(), fieldType.ColumnType());
             }
         }
@@ -114,8 +115,8 @@ public class DatabaseStore {
         Map<String, String> types = new HashMap<String, String>();
         for (Field field : fields) {
             fieldNames.add(field.getName());
-            if (field.isAnnotationPresent(FieldType.class)) {
-                FieldType fieldType = field.getAnnotation(FieldType.class);
+            if (field.isAnnotationPresent(ColumnType.class)) {
+                ColumnType fieldType = field.getAnnotation(ColumnType.class);
                 types.put(field.getName().toLowerCase(), fieldType.ColumnType());
             }
         }
@@ -254,9 +255,9 @@ public class DatabaseStore {
         return count;
     }
 
-    public <T extends BaseEntity> void saveAll(Collection<T> collection) throws Exception {
-        BaseEntity[] array = collection.toArray(new BaseEntity[0]);
-        for (BaseEntity data : array) {
+    public <T extends BaseTable> void saveAll(Collection<T> collection) throws Exception {
+        BaseTable[] array = collection.toArray(new BaseTable[0]);
+        for (BaseTable data : array) {
             data.save();
         }
     }
@@ -345,8 +346,8 @@ public class DatabaseStore {
         List<String> fieldNames = new ArrayList<String>();
         Map<String, String> typeMap = new HashMap<String, String>();
         for (Field field : fields) {
-            if (field.isAnnotationPresent(FieldType.class)) {
-                FieldType fieldType = field.getAnnotation(FieldType.class);
+            if (field.isAnnotationPresent(ColumnType.class)) {
+                ColumnType fieldType = field.getAnnotation(ColumnType.class);
                 typeMap.put(field.getName(), fieldType.ColumnType());
             }
             fieldNames.add(field.getName());
@@ -371,8 +372,8 @@ public class DatabaseStore {
         Map<String, String> types = new HashMap<String, String>();
         for (Field field : fields) {
             fieldNames.add(field.getName());
-            if (field.isAnnotationPresent(FieldType.class)) {
-                FieldType fieldType = field.getAnnotation(FieldType.class);
+            if (field.isAnnotationPresent(ColumnType.class)) {
+                ColumnType fieldType = field.getAnnotation(ColumnType.class);
                 types.put(field.getName().toLowerCase(), fieldType.ColumnType());
             }
         }
@@ -426,11 +427,11 @@ public class DatabaseStore {
         return this;
     }
 
-    public void save(String sql, Map<String, BaseEntity.ColumnValuePair> valueMap) {
+    public void save(String sql, Map<String, BaseTable.ColumnValuePair> valueMap) {
         SQLiteStatement statement = db.compileStatement(sql);
         String[] columnArr = valueMap.keySet().toArray(new String[]{});
         for (int i = 0, length = columnArr.length; i < length; i++) {
-            BaseEntity.ColumnValuePair pair = valueMap.get(columnArr[i]);
+            BaseTable.ColumnValuePair pair = valueMap.get(columnArr[i]);
             String type = pair.getType();
             Object value = pair.getValue();
             if (type.equals("int") || type.equals("float") || type.equals("long") || type.equals("short")) {

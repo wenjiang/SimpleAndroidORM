@@ -4,11 +4,11 @@
     <dbname value="maomao.db"></dbname>
 
     <!-- 数据库版本 -->
-    <version value="3"></version>
+    <version value="1"></version>
 
     <!-- 数据库表 -->
     <list>
-        <mapping class="com.example.pc.model.StatusEntity"></mapping>
-        <mapping class="com.example.pc.model.UserEntity"></mapping>
+        <mapping class="com.zwb.simple.db.model.Status"></mapping>
+        <mapping class="com.zwb.simple.db.model.User"></mapping>
     </list>
 </database>

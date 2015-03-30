@@ -1,4 +1,4 @@
-package com.example.pc.sqlpratice;
+package com.zwb.simple.db.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -6,10 +6,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.pc.db.BaseSQLiteException;
-import com.example.pc.db.DatabaseStore;
-import com.example.pc.db.NoSuchTableException;
-import com.example.pc.model.StatusEntity;
+import com.zwb.simple.db.DatabaseStore;
+import com.zwb.simple.db.R;
+import com.zwb.simple.db.exception.BaseSQLiteException;
+import com.zwb.simple.db.exception.NoSuchTableException;
+import com.zwb.simple.db.model.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
 
         DatabaseStore.getInstance().init(this);
         for (int i = 0; i < 10; i++) {
-            StatusEntity status = new StatusEntity();
+            Status status = new Status();
             try {
                 JSONObject json = new JSONObject();
                 json.put("name", "xbs");
@@ -44,8 +45,8 @@ public class MainActivity extends ActionBarActivity {
         DatabaseStore.getInstance().commit();
 
         try {
-            List<StatusEntity> statusEntities = (List<StatusEntity>) DatabaseStore.getInstance().from("status").where("age", 20).findAll(StatusEntity.class);
-            for (StatusEntity entity : statusEntities) {
+            List<Status> statusEntities = (List<Status>) DatabaseStore.getInstance().from("status").where("age", 20).findAll(Status.class);
+            for (Status entity : statusEntities) {
                 Log.e("MainActivity", entity.getText().toString());
             }
         } catch (BaseSQLiteException e) {

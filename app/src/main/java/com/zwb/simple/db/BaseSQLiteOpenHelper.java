@@ -1,4 +1,4 @@
-package com.example.pc.db;
+package com.zwb.simple.db;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,9 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.pc.model.BaseEntity;
-import com.example.pc.sqlpratice.Field;
-import com.example.pc.sqlpratice.Table;
+import com.zwb.simple.db.exception.BaseSQLiteException;
+import com.zwb.simple.db.exception.NoSuchTableException;
+import com.zwb.simple.db.model.BaseTable;
+import com.zwb.simple.db.annotation.Column;
+import com.zwb.simple.db.annotation.Table;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -52,7 +54,7 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         List<String> tableList = new ArrayList<String>();
         for (String tableEntity : tableModelList) {
             try {
-                BaseEntity entity = (BaseEntity) (Class.forName(tableEntity).newInstance());
+                BaseTable entity = (BaseTable) (Class.forName(tableEntity).newInstance());
                 String tableName = getTableName(entity);
                 tableList.add(tableName);
             } catch (InstantiationException e) {
@@ -108,7 +110,7 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         for (String table : tableSet) {
             try {
                 StringBuilder sql = new StringBuilder("create table if not exists ");
-                BaseEntity entity = (BaseEntity) (Class.forName(table).newInstance());
+                BaseTable entity = (BaseTable) (Class.forName(table).newInstance());
                 String tableName = getTableName(entity);
                 tableList.add(tableName);
                 sql.append(tableName);
@@ -138,7 +140,7 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         return columnList;
     }
 
-    private String getTableName(BaseEntity entity) throws NoSuchTableException {
+    private String getTableName(BaseTable entity) throws NoSuchTableException {
         String tableName = "";
         if (entity.getClass().isAnnotationPresent(Table.class)) {
             Table table = entity.getClass().getAnnotation(Table.class);
@@ -152,12 +154,12 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         return tableName;
     }
 
-    private List<String> getColumns(BaseEntity entity) {
+    private List<String> getColumns(BaseTable entity) {
         Set<String> columnSet = new HashSet<String>();
         java.lang.reflect.Field[] fields = entity.getClass().getDeclaredFields();
         for (java.lang.reflect.Field field : fields) {
-            if (field.isAnnotationPresent(Field.class)) {
-                Field meta = field.getAnnotation(Field.class);
+            if (field.isAnnotationPresent(Column.class)) {
+                Column meta = field.getAnnotation(Column.class);
                 String column = meta.column();
                 if (column.equals("")) {
                     column = field.getName();

@@ -1,4 +1,4 @@
-package com.example.pc.db;
+package com.zwb.simple.db.exception;
 
 /**
  * Created by pc on 2015/3/11.

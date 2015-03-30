@@ -1,12 +1,12 @@
-package com.example.pc.model;
+package com.zwb.simple.db.model;
 
 import android.util.Log;
 
-import com.example.pc.db.DatabaseStore;
-import com.example.pc.db.NoSuchTableException;
-import com.example.pc.sqlpratice.Field;
-import com.example.pc.sqlpratice.FieldType;
-import com.example.pc.sqlpratice.Table;
+import com.zwb.simple.db.DatabaseStore;
+import com.zwb.simple.db.annotation.Column;
+import com.zwb.simple.db.annotation.ColumnType;
+import com.zwb.simple.db.annotation.Table;
+import com.zwb.simple.db.exception.NoSuchTableException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by pc on 2015/3/5.
  */
-public class BaseEntity {
+public class BaseTable {
 
     public void delete() throws NoSuchTableException {
         Map<String, Object> valueMap = new HashMap<String, Object>();
@@ -31,8 +31,8 @@ public class BaseEntity {
         }
 
         for (java.lang.reflect.Field field : fields) {
-            if (field.isAnnotationPresent(Field.class)) {
-                Field meta = field.getAnnotation(Field.class);
+            if (field.isAnnotationPresent(Column.class)) {
+                Column meta = field.getAnnotation(Column.class);
                 String column = meta.column();
                 if (column.equals("")) {
                     column = field.getName();
@@ -67,16 +67,16 @@ public class BaseEntity {
         insertSql.append(tableName + " (");
         for (java.lang.reflect.Field field : fields) {
             ColumnValuePair pair = new ColumnValuePair();
-            if (field.isAnnotationPresent(Field.class)) {
-                Field meta = field.getAnnotation(Field.class);
+            if (field.isAnnotationPresent(Column.class)) {
+                Column meta = field.getAnnotation(Column.class);
                 String column = meta.column();
                 if (column.equals("")) {
                     column = field.getName();
                 }
                 columnList.add(column);
                 String fieldClass = "";
-                if (field.isAnnotationPresent(FieldType.class)) {
-                    FieldType fieldType = field.getAnnotation(FieldType.class);
+                if (field.isAnnotationPresent(ColumnType.class)) {
+                    ColumnType fieldType = field.getAnnotation(ColumnType.class);
                     fieldClass = fieldType.ColumnType();
                 }
                 field.setAccessible(true);

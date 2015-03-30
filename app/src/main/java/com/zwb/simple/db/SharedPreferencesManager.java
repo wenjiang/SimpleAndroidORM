@@ -1,4 +1,4 @@
-package com.example.pc.db;
+package com.zwb.simple.db;
 
 import android.content.Context;
 import android.content.SharedPreferences;
