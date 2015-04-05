@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/SQLPratice.iml" filepath="$PROJECT_DIR$/SQLPratice.iml" />
       <module fileurl="file://$PROJECT_DIR$/SimpleAndroidORM.iml" filepath="$PROJECT_DIR$/SimpleAndroidORM.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simpleorm.iml" filepath="$PROJECT_DIR$/simpleorm.iml" />
     </modules>
   </component>
 </project>

@@ -4,12 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 
+import com.zwb.simple.db.annotation.ColumnType;
 import com.zwb.simple.db.exception.BaseSQLiteException;
 import com.zwb.simple.db.model.BaseTable;
-import com.zwb.simple.db.annotation.ColumnType;
+import com.zwb.simple.db.utils.LogUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 数据库的操作类
  * Created by pc on 2015/2/9.
  */
 public class DatabaseStore {
@@ -40,6 +40,11 @@ public class DatabaseStore {
     private DatabaseStore() {
     }
 
+    /**
+     * DatabaseStore的单例
+     *
+     * @return DatabaseStore的单例
+     */
     public static DatabaseStore getInstance() {
         if (store == null) {
             store = new DatabaseStore();
@@ -48,12 +53,24 @@ public class DatabaseStore {
         return store;
     }
 
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     */
     public void init(Context context) {
         helper = BaseSQLiteOpenHelper.getInstance(context);
         db = helper.getWritableDatabase();
-        db.beginTransaction();
     }
 
+    /**
+     * 查询全部的数据
+     *
+     * @param clazz 要查询的表对象的class对象
+     * @param <T>   表对象的类型
+     * @return 表对象的List
+     * @throws BaseSQLiteException
+     */
     public <T> List<T> findAll(Class<T> clazz) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -77,6 +94,12 @@ public class DatabaseStore {
         return list;
     }
 
+    /**
+     * 寻找最适合的构造器
+     *
+     * @param modelClass 表对象的class对象
+     * @return 构造器
+     */
     private Constructor<?> findBestSuitConstructor(Class<?> modelClass) {
         Constructor<?> finalConstructor = null;
         Constructor<?>[] constructors = modelClass.getConstructors();
@@ -95,11 +118,26 @@ public class DatabaseStore {
         return finalConstructor;
     }
 
-    public DatabaseStore where(String key, Object value) {
-        whereStr += " where " + key + " like '%" + value + "%'";
+    /**
+     * where条件语句的拼接
+     *
+     * @param column 列名
+     * @param value  值
+     * @return DatabaseStore
+     */
+    public DatabaseStore where(String column, Object value) {
+        whereStr += " where " + column + " like '%" + value + "%'";
         return this;
     }
 
+    /**
+     * 查询
+     *
+     * @param clazz 表对象的class对象
+     * @param <T>   表对象的类型
+     * @return 表对象的List
+     * @throws BaseSQLiteException
+     */
     public <T> List<T> find(Class<T> clazz) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -130,6 +168,18 @@ public class DatabaseStore {
         return list;
     }
 
+    /**
+     * 获取数据
+     *
+     * @param clazz      表对象的class对象
+     * @param cursor     光标
+     * @param methods    方法List
+     * @param fieldNames 字段名
+     * @param fields     字段数组
+     * @param types      字段类型数组
+     * @param <T>        表对象的类型
+     * @return 表对象的List
+     */
     private <T> List<T> getList(Class<T> clazz, Cursor cursor, List<Method> methods, List<String> fieldNames, Field[] fields, Map<String, String> types) {
         List<T> list = new ArrayList<T>();
         Constructor<?> constructor = findBestSuitConstructor(clazz);
@@ -158,18 +208,24 @@ public class DatabaseStore {
 
                 list.add(data);
             } catch (InstantiationException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             } catch (IllegalAccessException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             } catch (InvocationTargetException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             } catch (JSONException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             }
         }
         return list;
     }
 
+    /**
+     * 获取Set方法
+     *
+     * @param clazz 表对象的class对象
+     * @return 方法数组
+     */
     private List<Method> getSetMethods(Class clazz) {
         Method[] allMethods = clazz.getMethods();
         List<Method> setMethods = new ArrayList<Method>();
@@ -185,11 +241,23 @@ public class DatabaseStore {
         return setMethods;
     }
 
+    /**
+     * order语句的拼接
+     *
+     * @param column 列名
+     * @return DatabaseStore
+     */
     public DatabaseStore order(String column) {
         orderStr += " order by " + column;
         return this;
     }
 
+    /**
+     * 数量
+     *
+     * @return 数量
+     * @throws BaseSQLiteException
+     */
     public int count() throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -206,6 +274,13 @@ public class DatabaseStore {
         return count;
     }
 
+    /**
+     * 计算平均值
+     *
+     * @param column 列名
+     * @return 平均值
+     * @throws BaseSQLiteException
+     */
     public double average(String column) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -221,6 +296,12 @@ public class DatabaseStore {
         return average;
     }
 
+    /**
+     * 删除
+     *
+     * @param table    表名
+     * @param valueMap 要删除的列名和值
+     */
     public void delete(String table, Map<String, Object> valueMap) {
         StringBuilder deleteSql = new StringBuilder("delete from " + table + " where ");
         String[] columnArr = valueMap.keySet().toArray(new String[]{});
@@ -237,6 +318,14 @@ public class DatabaseStore {
 
     }
 
+    /**
+     * 删除全部
+     *
+     * @param column 列名
+     * @param value  值
+     * @return 被删除的数量
+     * @throws BaseSQLiteException
+     */
     public int deleteAll(String column, String value) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -246,6 +335,15 @@ public class DatabaseStore {
         return count;
     }
 
+    /**
+     * 更新全部数据
+     *
+     * @param contentValues 更新的ContentValues
+     * @param column        列名
+     * @param value         值
+     * @return 更新的数量
+     * @throws BaseSQLiteException
+     */
     public int updateAll(ContentValues contentValues, String column, String value) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -255,22 +353,40 @@ public class DatabaseStore {
         return count;
     }
 
+    /**
+     * 保存全部
+     *
+     * @param collection 数据集合
+     * @param <T>        表的类型
+     * @throws Exception
+     */
     public <T extends BaseTable> void saveAll(Collection<T> collection) throws Exception {
+        db.beginTransaction();
         BaseTable[] array = collection.toArray(new BaseTable[0]);
         for (BaseTable data : array) {
             data.save();
         }
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
-    public Object findColumn(String content, Class<?> valueType) throws BaseSQLiteException {
+    /**
+     * 查询列的某个值
+     *
+     * @param column    列
+     * @param valueType 值类型
+     * @return 列的值
+     * @throws BaseSQLiteException
+     */
+    public Object findColumn(String column, Class<?> valueType) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
         }
-        String sql = " select " + content + " from " + table + (whereStr.equals("") ? "" : whereStr);
+        String sql = " select " + column + " from " + table + (whereStr.equals("") ? "" : whereStr);
         Cursor cursor = db.rawQuery(sql, null);
         Object data = null;
         try {
-            data = getRightColumn(cursor, content, valueType);
+            data = getRightColumn(cursor, column, valueType);
         } catch (JSONException e) {
 
         }
@@ -280,16 +396,24 @@ public class DatabaseStore {
         return data;
     }
 
-    public List findColumns(String content, Class<?> valueType) throws BaseSQLiteException {
+    /**
+     * 查询列的所有值
+     *
+     * @param column    列名
+     * @param valueType 值类型
+     * @return 列的所有值
+     * @throws BaseSQLiteException
+     */
+    public List findColumns(String column, Class<?> valueType) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
         }
-        String sql = " select " + content + " from " + table + (whereStr.equals("") ? "" : whereStr);
+        String sql = " select " + column + " from " + table + (whereStr.equals("") ? "" : whereStr);
         Cursor cursor = db.rawQuery(sql, null);
         List list = new ArrayList();
         while (cursor.moveToNext()) {
             try {
-                list.add(getColumnValue(cursor, content, null, valueType.getSimpleName()));
+                list.add(getColumnValue(cursor, column, null, valueType.getSimpleName()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -300,6 +424,14 @@ public class DatabaseStore {
         return list;
     }
 
+    /**
+     * 查询列的最新记录
+     *
+     * @param column    列名
+     * @param valueType 值类型
+     * @return 最新记录
+     * @throws BaseSQLiteException
+     */
     public Object findLastColumn(String column, Class<?> valueType) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -318,6 +450,14 @@ public class DatabaseStore {
         return data;
     }
 
+    /**
+     * 查询列最早的记录
+     *
+     * @param column    列名
+     * @param valueType 值类型
+     * @return 最早记录
+     * @throws BaseSQLiteException
+     */
     public Object findFirstColumn(String column, Class<?> valueType) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -336,6 +476,14 @@ public class DatabaseStore {
         return data;
     }
 
+    /**
+     * 查询数据库的最早记录
+     *
+     * @param clazz 表对象的class对象
+     * @param <T>   表对象类型
+     * @return 最早记录
+     * @throws BaseSQLiteException
+     */
     public <T> Object findFirst(Class<T> clazz) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -361,6 +509,14 @@ public class DatabaseStore {
         return list.get(0);
     }
 
+    /**
+     * 查询数据库最新的记录
+     *
+     * @param clazz 表对象的class对象
+     * @param <T>   表对象类型
+     * @return 最新记录
+     * @throws BaseSQLiteException
+     */
     public <T> Object findLast(Class<T> clazz) throws BaseSQLiteException {
         if (table.equals("")) {
             throw new BaseSQLiteException("Please call from() at the first");
@@ -386,6 +542,15 @@ public class DatabaseStore {
         return list.get(0);
     }
 
+    /**
+     * 获取正确的列值
+     *
+     * @param cursor    光标
+     * @param column    列名
+     * @param valueType 值类型
+     * @return 列的值
+     * @throws JSONException
+     */
     private Object getRightColumn(Cursor cursor, String column, Class<?> valueType) throws JSONException {
         Object data = null;
         if (cursor.moveToNext()) {
@@ -395,6 +560,16 @@ public class DatabaseStore {
         return data;
     }
 
+    /**
+     * 获取列值
+     *
+     * @param cursor    光标
+     * @param column    列名
+     * @param fieldType 字段类型
+     * @param dbType    数据库字段类型
+     * @return 列值
+     * @throws JSONException
+     */
     public Object getColumnValue(Cursor cursor, String column, String fieldType, String dbType) throws JSONException {
         Object data = null;
 
@@ -422,36 +597,30 @@ public class DatabaseStore {
         return data;
     }
 
+    /**
+     * 设置表名
+     *
+     * @param table 表名
+     * @return DatabaseStore
+     */
     public DatabaseStore from(String table) {
         this.table = table;
         return this;
     }
 
-    public void save(String sql, Map<String, BaseTable.ColumnValuePair> valueMap) {
-        SQLiteStatement statement = db.compileStatement(sql);
-        String[] columnArr = valueMap.keySet().toArray(new String[]{});
-        for (int i = 0, length = columnArr.length; i < length; i++) {
-            BaseTable.ColumnValuePair pair = valueMap.get(columnArr[i]);
-            String type = pair.getType();
-            Object value = pair.getValue();
-            if (type.equals("int") || type.equals("float") || type.equals("long") || type.equals("short")) {
-                statement.bindLong(i + 1, (Long) value);
-            } else if (type.equals("String")) {
-                statement.bindString(i + 1, (String) value);
-            } else if (type.equals("double")) {
-                statement.bindDouble(i + 1, (Double) value);
-            }
-
-            statement.execute();
-            statement.clearBindings();
-        }
+    /**
+     * 保存
+     *
+     * @param tableName 表名
+     * @param values    ContentValues
+     */
+    public void save(String tableName, ContentValues values) {
+        db.insert(tableName, null, values);
     }
 
-    public void commit() {
-        db.setTransactionSuccessful();
-        db.endTransaction();
-    }
-
+    /**
+     * 重置SQL语句
+     */
     public void reset() {
         whereStr = "";
         orderStr = "";

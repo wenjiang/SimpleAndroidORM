@@ -2,19 +2,19 @@ package com.zwb.simple.db.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.zwb.simple.db.DatabaseStore;
 import com.zwb.simple.db.R;
 import com.zwb.simple.db.exception.BaseSQLiteException;
-import com.zwb.simple.db.exception.NoSuchTableException;
 import com.zwb.simple.db.model.Status;
+import com.zwb.simple.db.utils.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,6 +26,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         DatabaseStore.getInstance().init(this);
+        List<Status> statuses = new ArrayList<Status>();
         for (int i = 0; i < 10; i++) {
             Status status = new Status();
             try {
@@ -33,24 +34,25 @@ public class MainActivity extends ActionBarActivity {
                 json.put("name", "xbs");
                 status.setText(json);
             } catch (JSONException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             }
             status.setAge(20);
-            try {
-                status.save();
-            } catch (NoSuchTableException e) {
-                Log.e("MainActivity", e.toString());
-            }
+            statuses.add(status);
         }
-        DatabaseStore.getInstance().commit();
 
         try {
-            List<Status> statusEntities = (List<Status>) DatabaseStore.getInstance().from("status").where("age", 20).findAll(Status.class);
+            DatabaseStore.getInstance().saveAll(statuses);
+//            status.save();
+        } catch (Exception e) {
+            LogUtil.e(e.toString());
+        }
+        try {
+            List<Status> statusEntities = (List<Status>) DatabaseStore.getInstance().from("status").findAll(Status.class);
             for (Status entity : statusEntities) {
-                Log.e("MainActivity", entity.getText().toString());
+                LogUtil.e(entity.getText().toString() + ":" + entity.getAge());
             }
         } catch (BaseSQLiteException e) {
-            Log.e("MainActivity", e.toString());
+            LogUtil.e(e.toString());
         }
     }
 

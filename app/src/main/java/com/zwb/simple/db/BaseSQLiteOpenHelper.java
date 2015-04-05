@@ -4,13 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
+import com.zwb.simple.db.annotation.Column;
+import com.zwb.simple.db.annotation.Table;
 import com.zwb.simple.db.exception.BaseSQLiteException;
 import com.zwb.simple.db.exception.NoSuchTableException;
 import com.zwb.simple.db.model.BaseTable;
-import com.zwb.simple.db.annotation.Column;
-import com.zwb.simple.db.annotation.Table;
+import com.zwb.simple.db.utils.LogUtil;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -30,11 +30,17 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
     private static String dbName;
     private static int version;
 
+    /**
+     * BaseSQLiteOpenHelper的单例
+     *
+     * @param context 上下文
+     * @return BaseSQLiteOpenHelper的单例
+     */
     public static BaseSQLiteOpenHelper getInstance(Context context) {
         try {
             readXml(context);
         } catch (BaseSQLiteException e) {
-            Log.e("DatabaseStore", e.toString());
+            LogUtil.e(e.toString());
         }
         return new BaseSQLiteOpenHelper(context, dbName, version);
     }
@@ -58,13 +64,13 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
                 String tableName = getTableName(entity);
                 tableList.add(tableName);
             } catch (InstantiationException e) {
-                Log.e("BaseSQLiteOpenHelper", e.toString());
+                LogUtil.e(e.toString());
             } catch (IllegalAccessException e) {
-                Log.e("BaseSQLiteOpenHelper", e.toString());
+                LogUtil.e(e.toString());
             } catch (ClassNotFoundException e) {
-                Log.e("BaseSQLiteOpenHelper", e.toString());
+                LogUtil.e(e.toString());
             } catch (NoSuchTableException e) {
-                Log.e("BaseSQLiteOpenHelper", e.toString());
+                LogUtil.e(e.toString());
             }
         }
         if (oldVersion < newVersion) {
@@ -104,6 +110,12 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * 创建表
+     *
+     * @param db SQLiteDatabase
+     * @return 表名的List
+     */
     private List<String> createTable(SQLiteDatabase db) {
         List<String> columnList = new ArrayList<String>();
         List<String> tableList = new ArrayList<String>();
@@ -126,13 +138,13 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
                 sql.append(");");
                 db.execSQL(sql.toString());
             } catch (InstantiationException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             } catch (IllegalAccessException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             } catch (ClassNotFoundException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             } catch (NoSuchTableException e) {
-                Log.e("DatabaseStore", e.toString());
+                LogUtil.e(e.toString());
             }
         }
 
@@ -140,6 +152,13 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         return columnList;
     }
 
+    /**
+     * 获取表名
+     *
+     * @param entity 表对象
+     * @return 表名
+     * @throws NoSuchTableException
+     */
     private String getTableName(BaseTable entity) throws NoSuchTableException {
         String tableName = "";
         if (entity.getClass().isAnnotationPresent(Table.class)) {
@@ -154,6 +173,12 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         return tableName;
     }
 
+    /**
+     * 获取列名
+     *
+     * @param entity 表对象
+     * @return 列名的List
+     */
     private List<String> getColumns(BaseTable entity) {
         Set<String> columnSet = new HashSet<String>();
         java.lang.reflect.Field[] fields = entity.getClass().getDeclaredFields();
@@ -176,6 +201,12 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
         return columnList;
     }
 
+    /**
+     * 读取数据库的配置文件
+     *
+     * @param context 上下文
+     * @throws BaseSQLiteException
+     */
     private static void readXml(Context context) throws BaseSQLiteException {
         SharedPreferencesManager.init(context);
         tableSet = new HashSet<String>();
@@ -215,7 +246,7 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
                 evtType = xpp.next();
             }
         } catch (Exception e) {
-            Log.e("DatabaseStore", e.toString());
+            LogUtil.e(e.toString());
         } finally {
             List<String> tableList = new ArrayList<String>();
             for (String table : tableSet) {
