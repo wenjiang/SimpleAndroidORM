@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database>
     <!-- 数据库名称 -->
-    <dbname value="maomao.db"></dbname>
+    <dbname value="zwb.db"></dbname>
 
     <!-- 数据库版本 -->
     <version value="1"></version>
